@@ -7,12 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED3B55141C045B8800EE4BAC /* BNRItem.m in Sources */ = {isa = PBXBuildFile; fileRef = ED3B55131C045B8800EE4BAC /* BNRItem.m */; };
+		ED3B55171C046AC500EE4BAC /* ItemStore.m in Sources */ = {isa = PBXBuildFile; fileRef = ED3B55161C046AC400EE4BAC /* ItemStore.m */; };
 		EDF718791C03EA640091E664 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EDF718781C03EA640091E664 /* main.m */; };
 		EDF7187C1C03EA640091E664 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EDF7187B1C03EA640091E664 /* AppDelegate.m */; };
 		EDF7187E1C03EA640091E664 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDF7187D1C03EA640091E664 /* Assets.xcassets */; };
 		EDF718811C03EA640091E664 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDF7187F1C03EA640091E664 /* LaunchScreen.storyboard */; };
 		EDF7188C1C03EA640091E664 /* HomePwnerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EDF7188B1C03EA640091E664 /* HomePwnerTests.m */; };
 		EDF718971C03EA640091E664 /* HomePwnerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EDF718961C03EA640091E664 /* HomePwnerUITests.m */; };
+		EDF718A61C03EFBA0091E664 /* ItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDF718A51C03EFBA0091E664 /* ItemsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +36,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		ED3B55121C045B8800EE4BAC /* BNRItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNRItem.h; sourceTree = "<group>"; };
+		ED3B55131C045B8800EE4BAC /* BNRItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNRItem.m; sourceTree = "<group>"; };
+		ED3B55151C046AC400EE4BAC /* ItemStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStore.h; sourceTree = "<group>"; };
+		ED3B55161C046AC400EE4BAC /* ItemStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStore.m; sourceTree = "<group>"; };
 		EDF718741C03EA640091E664 /* HomePwner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomePwner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDF718781C03EA640091E664 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EDF7187A1C03EA640091E664 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -46,6 +53,8 @@
 		EDF718921C03EA640091E664 /* HomePwnerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HomePwnerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDF718961C03EA640091E664 /* HomePwnerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePwnerUITests.m; sourceTree = "<group>"; };
 		EDF718981C03EA640091E664 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDF718A41C03EFBA0091E664 /* ItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemsViewController.h; sourceTree = "<group>"; };
+		EDF718A51C03EFBA0091E664 /* ItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +107,12 @@
 			children = (
 				EDF7187A1C03EA640091E664 /* AppDelegate.h */,
 				EDF7187B1C03EA640091E664 /* AppDelegate.m */,
+				ED3B55121C045B8800EE4BAC /* BNRItem.h */,
+				ED3B55131C045B8800EE4BAC /* BNRItem.m */,
+				EDF718A41C03EFBA0091E664 /* ItemsViewController.h */,
+				EDF718A51C03EFBA0091E664 /* ItemsViewController.m */,
+				ED3B55151C046AC400EE4BAC /* ItemStore.h */,
+				ED3B55161C046AC400EE4BAC /* ItemStore.m */,
 				EDF7187D1C03EA640091E664 /* Assets.xcassets */,
 				EDF7187F1C03EA640091E664 /* LaunchScreen.storyboard */,
 				EDF718821C03EA640091E664 /* Info.plist */,
@@ -264,8 +279,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDF718A61C03EFBA0091E664 /* ItemsViewController.m in Sources */,
+				ED3B55141C045B8800EE4BAC /* BNRItem.m in Sources */,
 				EDF7187C1C03EA640091E664 /* AppDelegate.m in Sources */,
 				EDF718791C03EA640091E664 /* main.m in Sources */,
+				ED3B55171C046AC500EE4BAC /* ItemStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,6 +415,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HomePwner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Cocos.HomePwner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -408,6 +427,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HomePwner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Cocos.HomePwner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -481,6 +501,7 @@
 				EDF7189D1C03EA640091E664 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EDF7189E1C03EA640091E664 /* Build configuration list for PBXNativeTarget "HomePwnerTests" */ = {
 			isa = XCConfigurationList;
@@ -489,6 +510,7 @@
 				EDF718A01C03EA640091E664 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EDF718A11C03EA640091E664 /* Build configuration list for PBXNativeTarget "HomePwnerUITests" */ = {
 			isa = XCConfigurationList;
@@ -497,6 +519,7 @@
 				EDF718A31C03EA640091E664 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

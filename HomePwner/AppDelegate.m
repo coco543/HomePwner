@@ -18,7 +18,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-    self.window.rootViewController = [[UIViewController alloc]init];
+    ItemsViewController *itemsViewController = [[ItemsViewController alloc] init];
+    self.window.rootViewController = itemsViewController;
+//    self.window.rootViewController = [[UIViewController alloc]init];
     [self.window makeKeyAndVisible];
     return YES;
 }
