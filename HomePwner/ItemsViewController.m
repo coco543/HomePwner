@@ -20,6 +20,7 @@
             [[ItemStore sharedStore] createItem];
         }
     }
+    
     return self;
 }
 
@@ -54,10 +55,16 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
+    [self.tableView setRowHeight:60];
+    
+    //设置背景图
+    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg.png"]];
+    [self.tableView setBackgroundView:imgView];
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 40;
+    return 44;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section{
