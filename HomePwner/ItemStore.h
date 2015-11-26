@@ -10,6 +10,13 @@
 #import "BNRItem.h"
 @interface ItemStore : NSObject
 @property (nonatomic,readonly) NSArray *allItems;
+
 +(instancetype) sharedStore;
+
 -(BNRItem *)createItem;
+
+-(void)removeItem:(BNRItem *)item;
+
+-(void)moveItemAtIndex:(NSUInteger)formIndex toIndex:(NSUInteger)toIndex;
+
 @end

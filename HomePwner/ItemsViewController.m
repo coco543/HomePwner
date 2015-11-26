@@ -9,6 +9,9 @@
 #import "ItemsViewController.h"
 #import "ItemStore.h"
 #import "BNRItem.h"
+@interface ItemsViewController()
+@property (nonatomic,strong) IBOutlet UIView *headerView;
+@end
 @implementation ItemsViewController
 
 //无论调用哪一个初始化方法,最后都是返回一个UITableViewStylePlain类型的Table对象
@@ -16,9 +19,9 @@
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if(self){
-        for (int i =0; i<5; i++) {
-            [[ItemStore sharedStore] createItem];
-        }
+//        for (int i =0; i<5; i++) {
+//            [[ItemStore sharedStore] createItem];
+//        }
     }
     
     return self;
@@ -60,6 +63,19 @@
     //设置背景图
     UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg.png"]];
     [self.tableView setBackgroundView:imgView];
+    
+    //增加一个头视图
+    UIView *headView = self.headerView;
+    [self.tableView setTableHeaderView:headView];
+}
+
+
+-(UIView *)headerView{
+    //延迟载入,当需要用到了才载入
+    if(!_headerView){
+        [[NSBundle mainBundle] loadNibNamed:@"HeaderView" owner:self options:nil];
+    }
+    return _headerView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -78,4 +94,39 @@
     [view addSubview:cell];
     return ;
 }
+
+-(IBAction)addNewItem:(id)sender{
+    //创建一个新的item对象
+    BNRItem *itme = [[ItemStore sharedStore] createItem];
+    NSInteger lastRow = [[[ItemStore sharedStore] allItems] indexOfObject:itme];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:lastRow inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
+}
+
+-(IBAction)toggleEditModel:(id)sender{
+    if (self.isEditing) {
+        [self setEditing:NO animated:YES];
+        [sender setTitle:@"Edit" forState:UIControlStateNormal];
+    }else{
+        [self setEditing:YES animated:NO];
+        [sender setTitle:@"Done" forState:UIControlStateNormal];
+    }
+}
+
+//实现删除
+-(void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSArray *items = [[ItemStore sharedStore] allItems];
+        BNRItem *item = items[indexPath.row];
+        [[ItemStore sharedStore] removeItem:item];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
+    }
+}
+
+-(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
+    [[ItemStore sharedStore] moveItemAtIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
+}
+
+
+
 @end

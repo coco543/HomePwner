@@ -10,6 +10,7 @@
 		ED3B55141C045B8800EE4BAC /* BNRItem.m in Sources */ = {isa = PBXBuildFile; fileRef = ED3B55131C045B8800EE4BAC /* BNRItem.m */; };
 		ED3B55171C046AC500EE4BAC /* ItemStore.m in Sources */ = {isa = PBXBuildFile; fileRef = ED3B55161C046AC400EE4BAC /* ItemStore.m */; };
 		EDF57FD81C0681FC00DA56F7 /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = EDF57FD71C0681FC00DA56F7 /* bg.png */; };
+		EDF57FDC1C06900D00DA56F7 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EDF57FDB1C06900D00DA56F7 /* HeaderView.xib */; };
 		EDF718791C03EA640091E664 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EDF718781C03EA640091E664 /* main.m */; };
 		EDF7187C1C03EA640091E664 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EDF7187B1C03EA640091E664 /* AppDelegate.m */; };
 		EDF7187E1C03EA640091E664 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDF7187D1C03EA640091E664 /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 		ED3B55151C046AC400EE4BAC /* ItemStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStore.h; sourceTree = "<group>"; };
 		ED3B55161C046AC400EE4BAC /* ItemStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStore.m; sourceTree = "<group>"; };
 		EDF57FD71C0681FC00DA56F7 /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
+		EDF57FDB1C06900D00DA56F7 /* HeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		EDF718741C03EA640091E664 /* HomePwner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomePwner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDF718781C03EA640091E664 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EDF7187A1C03EA640091E664 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				ED3B55151C046AC400EE4BAC /* ItemStore.h */,
 				ED3B55161C046AC400EE4BAC /* ItemStore.m */,
 				EDF7187D1C03EA640091E664 /* Assets.xcassets */,
+				EDF57FDB1C06900D00DA56F7 /* HeaderView.xib */,
 				EDF7187F1C03EA640091E664 /* LaunchScreen.storyboard */,
 				EDF57FD71C0681FC00DA56F7 /* bg.png */,
 				EDF718821C03EA640091E664 /* Info.plist */,
@@ -259,6 +262,7 @@
 				EDF7187E1C03EA640091E664 /* Assets.xcassets in Resources */,
 				EDF718811C03EA640091E664 /* LaunchScreen.storyboard in Resources */,
 				EDF57FD81C0681FC00DA56F7 /* bg.png in Resources */,
+				EDF57FDC1C06900D00DA56F7 /* HeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -39,9 +39,25 @@
 -(NSArray *)allItems{
     return self.privateItems;
 }
+
 -(BNRItem *)createItem{
     BNRItem *item = [BNRItem randomItem];
     [[self privateItems] addObject:item];
     return item;
+}
+
+-(void)removeItem:(BNRItem *)item{
+    [self.privateItems removeObjectIdenticalTo:item];
+}
+
+-(void)moveItemAtIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex{
+    
+    if(fromIndex == toIndex){
+        return;
+    }
+    BNRItem *item = self.privateItems[fromIndex];
+    [self removeItem:item];
+    [self.privateItems insertObject:item atIndex:toIndex];
+    
 }
 @end
