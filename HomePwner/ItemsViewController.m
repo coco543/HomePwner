@@ -43,6 +43,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"cellForRowAtIndexPath %@",indexPath);
     //UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
     //创建可重复使用的
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:indexPath];
@@ -58,8 +59,9 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
-    [self.tableView setRowHeight:60];
-    
+    [self.tableView setRowHeight:44];
+    //禁止回弹
+    [self.tableView setBounces:NO];
     //设置背景图
     UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg.png"]];
     [self.tableView setBackgroundView:imgView];
@@ -78,10 +80,10 @@
     return _headerView;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 44;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    return 44;
+//}
 
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section{
     if (section != 0) {
@@ -123,10 +125,32 @@
     }
 }
 
+//实现移动
 -(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
-    [[ItemStore sharedStore] moveItemAtIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
+    NSLog(@"move: %@",[[ItemStore sharedStore] allItems]);
+    NSLog(@"befor =>%@",self.tableView.visibleCells);
+    if (destinationIndexPath.section == 0 && (destinationIndexPath.row == [[[ItemStore sharedStore] allItems] count] - 1)) {
+        //reloadRowsAtIndexPaths 会在内存里的目标行帮忙创建一个cell.所以数据源个数不变但是cell数量多了一个,会有异常..
+        //[self.tableView reloadRowsAtIndexPaths:@[sourceIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadData];
+        
+    }else{
+        [[ItemStore sharedStore] moveItemAtIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
+    }
+    NSLog(@"alter =>%@",self.tableView.visibleCells);
+    return;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return @"remove";
+}
 
+//UITableViewDataSource 协议里的方法
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.section == 0 && (indexPath.row == [[[ItemStore sharedStore] allItems] count] - 1)){
+        return NO;
+    }
+    return YES;
+}
 
 @end
