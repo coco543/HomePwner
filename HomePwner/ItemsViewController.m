@@ -19,9 +19,15 @@
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if(self){
-//        for (int i =0; i<5; i++) {
-//            [[ItemStore sharedStore] createItem];
-//        }
+        UINavigationItem *navItem = self.navigationItem;
+        navItem . title = @"Homepwner";
+        
+        UIBarButtonItem *bbi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewItem:)];
+        navItem.rightBarButtonItem = bbi;
+        
+        navItem.leftBarButtonItem = self.editButtonItem;
+        //下面的代码可以实现相同的功能:添加左边编辑按钮
+        //navItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(toggleEditModel:)];
     }
     
     return self;
@@ -67,18 +73,18 @@
     [self.tableView setBackgroundView:imgView];
     
     //增加一个头视图
-    UIView *headView = self.headerView;
-    [self.tableView setTableHeaderView:headView];
+    //UIView *headView = self.headerView;
+    //[self.tableView setTableHeaderView:headView];
 }
 
 
--(UIView *)headerView{
-    //延迟载入,当需要用到了才载入
-    if(!_headerView){
-        [[NSBundle mainBundle] loadNibNamed:@"HeaderView" owner:self options:nil];
-    }
-    return _headerView;
-}
+//-(UIView *)headerView{
+//    //延迟载入,当需要用到了才载入
+//    if(!_headerView){
+//        [[NSBundle mainBundle] loadNibNamed:@"HeaderView" owner:self options:nil];
+//    }
+//    return _headerView;
+//}
 
 //- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 //{
@@ -108,9 +114,12 @@
 -(IBAction)toggleEditModel:(id)sender{
     if (self.isEditing) {
         [self setEditing:NO animated:YES];
+        //注释掉的代码是为了成为UIBarButtonItem 的action时,改变相应的UIBarButtonItem的标题
+        //[self.navigationItem.leftBarButtonItem setTitle:@"编辑"];
         [sender setTitle:@"Edit" forState:UIControlStateNormal];
     }else{
         [self setEditing:YES animated:NO];
+        //[self.navigationItem.leftBarButtonItem setTitle:@"完成"];
         [sender setTitle:@"Done" forState:UIControlStateNormal];
     }
 }
@@ -153,4 +162,19 @@
     return YES;
 }
 
+//选中某行时
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    DetailViewController *detailViewController = [[DetailViewController alloc] init];
+    detailViewController.item = [[ItemStore sharedStore] allItems][indexPath.row];
+    [self.navigationController pushViewController:detailViewController animated:YES];
+    
+}
+
+//视图要显示的时候,刷新一下表格的数据
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+}
 @end

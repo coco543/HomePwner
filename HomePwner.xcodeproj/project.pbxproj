@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED1E89521C07D89E001F8658 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED1E89501C07D89E001F8658 /* DetailViewController.m */; };
+		ED1E89531C07D89E001F8658 /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED1E89511C07D89E001F8658 /* DetailViewController.xib */; };
 		ED3B55141C045B8800EE4BAC /* BNRItem.m in Sources */ = {isa = PBXBuildFile; fileRef = ED3B55131C045B8800EE4BAC /* BNRItem.m */; };
 		ED3B55171C046AC500EE4BAC /* ItemStore.m in Sources */ = {isa = PBXBuildFile; fileRef = ED3B55161C046AC400EE4BAC /* ItemStore.m */; };
 		EDF57FD81C0681FC00DA56F7 /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = EDF57FD71C0681FC00DA56F7 /* bg.png */; };
@@ -38,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		ED1E894F1C07D89E001F8658 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		ED1E89501C07D89E001F8658 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		ED1E89511C07D89E001F8658 /* DetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewController.xib; sourceTree = "<group>"; };
 		ED3B55121C045B8800EE4BAC /* BNRItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNRItem.h; sourceTree = "<group>"; };
 		ED3B55131C045B8800EE4BAC /* BNRItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNRItem.m; sourceTree = "<group>"; };
 		ED3B55151C046AC400EE4BAC /* ItemStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStore.h; sourceTree = "<group>"; };
@@ -117,6 +122,9 @@
 				EDF718A51C03EFBA0091E664 /* ItemsViewController.m */,
 				ED3B55151C046AC400EE4BAC /* ItemStore.h */,
 				ED3B55161C046AC400EE4BAC /* ItemStore.m */,
+				ED1E894F1C07D89E001F8658 /* DetailViewController.h */,
+				ED1E89501C07D89E001F8658 /* DetailViewController.m */,
+				ED1E89511C07D89E001F8658 /* DetailViewController.xib */,
 				EDF7187D1C03EA640091E664 /* Assets.xcassets */,
 				EDF57FDB1C06900D00DA56F7 /* HeaderView.xib */,
 				EDF7187F1C03EA640091E664 /* LaunchScreen.storyboard */,
@@ -261,6 +269,7 @@
 			files = (
 				EDF7187E1C03EA640091E664 /* Assets.xcassets in Resources */,
 				EDF718811C03EA640091E664 /* LaunchScreen.storyboard in Resources */,
+				ED1E89531C07D89E001F8658 /* DetailViewController.xib in Resources */,
 				EDF57FD81C0681FC00DA56F7 /* bg.png in Resources */,
 				EDF57FDC1C06900D00DA56F7 /* HeaderView.xib in Resources */,
 			);
@@ -292,6 +301,7 @@
 				EDF7187C1C03EA640091E664 /* AppDelegate.m in Sources */,
 				EDF718791C03EA640091E664 /* main.m in Sources */,
 				ED3B55171C046AC500EE4BAC /* ItemStore.m in Sources */,
+				ED1E89521C07D89E001F8658 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
