@@ -8,16 +8,19 @@
 
 #import "DetailViewController.h"
 #import "BNRItem.h"
-@interface DetailViewController ()
+@interface DetailViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UITextField *serialNumberField;
 @property (weak, nonatomic) IBOutlet UITextField *valueField;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 
 @property (nonatomic,strong) UIDatePicker *datePicker;
 @end
 
 @implementation DetailViewController
+
 -(void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
@@ -101,6 +104,28 @@
     NSDate *date = self.datePicker.date;
     self.item.dateCreated = date;
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+//拍照按钮
+- (IBAction)takePicture:(id)sender {
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }else{
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    imagePicker.delegate = self;
+    
+    //设置模态方式呈现摄像视图
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+    UIImage *img = info[UIImagePickerControllerOriginalImage];
+    
+    self.imageView.image = img;
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
