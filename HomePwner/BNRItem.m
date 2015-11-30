@@ -118,10 +118,16 @@
     return _varietyString;
 }
 
+
+-(void)setDateCreated:(NSDate*)date{
+    _dateCreated = date;
+}
+
 - (NSDate *)dateCreated
 {
     return _dateCreated;
 }
+
 
 - (NSString *)description
 {

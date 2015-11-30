@@ -8,7 +8,7 @@
 
 #import "ItemStore.h"
 @interface ItemStore ()
-@property (nonatomic) NSMutableArray *privateItems;
+@property (nonatomic,strong) NSMutableArray *privateItems;
 @end
 
 @implementation ItemStore

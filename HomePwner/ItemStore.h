@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "BNRItem.h"
 @interface ItemStore : NSObject
-@property (nonatomic,readonly) NSArray *allItems;
+@property (nonatomic,readonly,strong) NSArray *allItems;
 
 +(instancetype) sharedStore;
 
