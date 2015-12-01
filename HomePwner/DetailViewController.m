@@ -9,6 +9,7 @@
 #import "DetailViewController.h"
 #import "BNRItem.h"
 #import "ImageStore.h"
+#import "CameraLayerView.h"
 
 @interface DetailViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
@@ -118,11 +119,16 @@
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
+        CameraLayerView *overLayImgView = [[CameraLayerView alloc] initWithFrame:CGRectMake(0, 0, 320, 640)];
+        overLayImgView.image = [UIImage imageNamed:@"cameraLayer.png"];
+        imagePicker.cameraOverlayView = overLayImgView;
     }else{
         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     }
     imagePicker.allowsEditing = YES;
     imagePicker.delegate = self;
+    
     
     //设置模态方式呈现摄像视图
     [self presentViewController:imagePicker animated:YES completion:nil];
@@ -135,7 +141,6 @@
     [[ImageStore sharedStore] setImage:img forkey:self.item.itemKey];
     
     self.imageView.image = img;
-
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -154,6 +159,16 @@
 - (IBAction)backgroundTapped:(id)sender {
     NSLog(@"Tapped~");
     [self.view endEditing:YES];
+}
+- (IBAction)deleteImage:(id)sender {
+    NSLog(@"Delete Image");
+    [[ImageStore sharedStore] deleteImageForKey:self.item.itemKey];
+    self.imageView.image = nil;
+}
+
+//阻止摄像层十字架拖动
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
+    return NO;
 }
 
 @end

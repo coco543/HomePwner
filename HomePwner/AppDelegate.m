@@ -17,6 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//    NSLog(@"%@",NSStringFromCGSize([[UIScreen mainScreen] bounds].size));
     self.window.backgroundColor = [UIColor whiteColor];
     ItemsViewController *itemsViewController = [[ItemsViewController alloc] init];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemsViewController];
