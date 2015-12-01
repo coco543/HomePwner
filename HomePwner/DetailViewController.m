@@ -8,7 +8,9 @@
 
 #import "DetailViewController.h"
 #import "BNRItem.h"
-@interface DetailViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+#import "ImageStore.h"
+
+@interface DetailViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UITextField *serialNumberField;
 @property (weak, nonatomic) IBOutlet UITextField *valueField;
@@ -49,6 +51,11 @@
     NSArray * buttonsArray = [NSArray arrayWithObjects:btn1,btn2,doneButton,nil];
     [topView setItems:buttonsArray];
     [self.valueField setInputAccessoryView:topView];
+    
+    //载入BNRItem对象的图片
+    NSString *key = self.item.itemKey;
+    UIImage *img = [[ImageStore sharedStore] imageForKey:key];
+    self.imageView.image = img;
     
 }
 
@@ -114,6 +121,7 @@
     }else{
         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     }
+    imagePicker.allowsEditing = YES;
     imagePicker.delegate = self;
     
     //设置模态方式呈现摄像视图
@@ -121,11 +129,31 @@
 }
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
-    UIImage *img = info[UIImagePickerControllerOriginalImage];
+    //UIImage *img = info[UIImagePickerControllerOriginalImage];
+    UIImage *img = info[UIImagePickerControllerEditedImage];
+    
+    [[ImageStore sharedStore] setImage:img forkey:self.item.itemKey];
     
     self.imageView.image = img;
+
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    NSLog(@"perss return");
+    [textField resignFirstResponder];
+    return YES;
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    NSLog(@"touch");
+}
+
+//DetailView 顶层视图已经修改为UIContrl,所以可以响应用户的触摸事件(跟UIResponder里的事件有区别)
+- (IBAction)backgroundTapped:(id)sender {
+    NSLog(@"Tapped~");
+    [self.view endEditing:YES];
 }
 
 @end

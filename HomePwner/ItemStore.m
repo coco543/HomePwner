@@ -7,6 +7,7 @@
 //
 
 #import "ItemStore.h"
+#import "ImageStore.h"
 @interface ItemStore ()
 @property (nonatomic,strong) NSMutableArray *privateItems;
 @end
@@ -47,6 +48,10 @@
 }
 
 -(void)removeItem:(BNRItem *)item{
+    
+    NSString *key = item.itemKey;
+    [[ImageStore sharedStore] deleteImageForKey:key];
+    
     [self.privateItems removeObjectIdenticalTo:item];
 }
 
