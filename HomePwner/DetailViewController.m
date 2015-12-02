@@ -10,7 +10,7 @@
 #import "BNRItem.h"
 #import "ImageStore.h"
 #import "CameraLayerView.h"
-
+@import MobileCoreServices;
 @interface DetailViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UITextField *serialNumberField;
@@ -84,6 +84,7 @@
     [self.valueField resignFirstResponder];
 }
 
+#pragma mark - Detail edit
 //圧入一个新页面
 -(IBAction)changeDate:(id)sender{
     //方法1 新建一个视图,里面放好一个时间视图和一个按钮
@@ -114,45 +115,11 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-//拍照按钮
-- (IBAction)takePicture:(id)sender {
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        
-        CameraLayerView *overLayImgView = [[CameraLayerView alloc] initWithFrame:CGRectMake(0, 0, 320, 640)];
-        overLayImgView.image = [UIImage imageNamed:@"cameraLayer.png"];
-        imagePicker.cameraOverlayView = overLayImgView;
-    }else{
-        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    }
-    imagePicker.allowsEditing = YES;
-    imagePicker.delegate = self;
-    
-    
-    //设置模态方式呈现摄像视图
-    [self presentViewController:imagePicker animated:YES completion:nil];
-}
-
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
-    //UIImage *img = info[UIImagePickerControllerOriginalImage];
-    UIImage *img = info[UIImagePickerControllerEditedImage];
-    
-    [[ImageStore sharedStore] setImage:img forkey:self.item.itemKey];
-    
-    self.imageView.image = img;
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     NSLog(@"perss return");
     [textField resignFirstResponder];
     return YES;
-}
-
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    NSLog(@"touch");
 }
 
 //DetailView 顶层视图已经修改为UIContrl,所以可以响应用户的触摸事件(跟UIResponder里的事件有区别)
@@ -166,9 +133,52 @@
     self.imageView.image = nil;
 }
 
-//阻止摄像层十字架拖动
-- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
-    return NO;
+#pragma mark - Camera
+//拍照按钮
+- (IBAction)takePicture:(id)sender {
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
+        CameraLayerView *overLayImgView = [[CameraLayerView alloc] initWithFrame:CGRectMake(0, 0, 320, 640)];
+        overLayImgView.image = [UIImage imageNamed:@"cameraLayer.png"];
+        imagePicker.cameraOverlayView = overLayImgView;
+    }else{
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    if ([UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera]) {
+        imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+    }
+    imagePicker.allowsEditing = YES;
+    imagePicker.delegate = self;
+    
+    
+    //设置模态方式呈现摄像视图
+    [self presentViewController:imagePicker animated:YES completion:nil];
 }
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+    
+    NSString *mediaType = info[@"UIImagePickerControllerMediaType"];
+    if (mediaType == (NSString *)kUTTypeImage) {
+        //UIImage *img = info[UIImagePickerControllerOriginalImage];
+        UIImage *img = info[UIImagePickerControllerEditedImage];
+        
+        [[ImageStore sharedStore] setImage:img forkey:self.item.itemKey];
+        
+        self.imageView.image = img;
+        UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil);
+    }else if (mediaType == (NSString *)kUTTypeMovie){
+        NSURL *mediaUrl = info[UIImagePickerControllerMediaURL];
+        
+        //是否可以保存这个地址的内容到相册
+        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum([mediaUrl path])) {
+            UISaveVideoAtPathToSavedPhotosAlbum([mediaUrl path], nil, nil, nil);
+            [[NSFileManager defaultManager] removeItemAtPath:[mediaUrl path] error:nil];
+            NSLog(@"Video has been saved");
+        }
+    }
 
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end
