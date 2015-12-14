@@ -18,12 +18,40 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (weak,nonatomic) IBOutlet UIButton *dateButton;
 
 @property (nonatomic,strong) UIDatePicker *datePicker;
 @end
 
 @implementation DetailViewController
 
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    UIImageView *iv = [[UIImageView alloc] initWithImage:nil];
+    iv.frame = [[UIScreen mainScreen] bounds];
+    //设置缩放模式
+    iv.contentMode = UIViewContentModeScaleAspectFit;
+    
+    //告诉自动布局系统不要把自动缩放的掩码转换为约束
+    iv.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.view addSubview:iv];
+    self.imageView = iv;
+    
+    NSDictionary *nameMap = @{@"imageView":self.imageView,
+                              @"dateButton":self.dateButton,
+                              @"toolbar":self.toolbar};
+    //左右距离父视图分别为0
+    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[imageView]-0-|" options:0 metrics:nil views:nameMap];
+    
+    //顶边距离date控件8点,距离toolbal也是8点
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[dateButton]-8-[imageView]-8-[toolbar]" options:0 metrics:nil views:nameMap];
+    
+    //约束要添加到哪一个视图上?根据判定法则添加 P313
+    [self.view addConstraints:horizontalConstraints];
+    [self.view addConstraints:verticalConstraints];
+    
+}
 -(void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
@@ -135,7 +163,7 @@
     NSLog(@"Tapped~");
     [self.view endEditing:YES];
     
-    //运动有歧义的视图,方便调试
+    //运动有歧义的视图,方便调试(正式发布前建议不要使用)
     for (UIView *subView in self.view.subviews) {
         if ([subView hasAmbiguousLayout]) {
             [subView exerciseAmbiguityInLayout];
@@ -164,7 +192,7 @@
     if ([UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera]) {
         imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
     }
-    imagePicker.allowsEditing = YES;
+    imagePicker.allowsEditing = NO;
     imagePicker.delegate = self;
     
     
@@ -175,13 +203,13 @@
     
     NSString *mediaType = info[@"UIImagePickerControllerMediaType"];
     if (mediaType == (NSString *)kUTTypeImage) {
-        //UIImage *img = info[UIImagePickerControllerOriginalImage];
-        UIImage *img = info[UIImagePickerControllerEditedImage];
+        UIImage *img = info[UIImagePickerControllerOriginalImage];
+        //UIImage *img = info[UIImagePickerControllerEditedImage];
         
         [[ImageStore sharedStore] setImage:img forkey:self.item.itemKey];
         
         self.imageView.image = img;
-        UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil);
+        //UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil);
     }else if (mediaType == (NSString *)kUTTypeMovie){
         NSURL *mediaUrl = info[UIImagePickerControllerMediaURL];
         
