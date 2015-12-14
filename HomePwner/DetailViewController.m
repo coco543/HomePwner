@@ -72,6 +72,14 @@
     item.valueInDollars = [self.valueField.text intValue];
 }
 
+-(void)viewDidLayoutSubviews{
+    for (UIView *subView in self.view.subviews) {
+        if ([subView hasAmbiguousLayout]) {
+            NSLog(@"AMBIGUOUS: %@",subView);
+        }
+    }
+}
+
 -(void)setItem:(BNRItem *)item{
     _item = item;
     self.navigationItem.title = item.itemName;
@@ -126,6 +134,13 @@
 - (IBAction)backgroundTapped:(id)sender {
     NSLog(@"Tapped~");
     [self.view endEditing:YES];
+    
+    //运动有歧义的视图,方便调试
+    for (UIView *subView in self.view.subviews) {
+        if ([subView hasAmbiguousLayout]) {
+            [subView exerciseAmbiguityInLayout];
+        }
+    }
 }
 - (IBAction)deleteImage:(id)sender {
     NSLog(@"Delete Image");
