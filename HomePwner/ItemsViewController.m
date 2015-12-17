@@ -20,7 +20,7 @@
     self = [super initWithStyle:UITableViewStylePlain];
     if(self){
         UINavigationItem *navItem = self.navigationItem;
-        navItem . title = @"Homepwner";
+        navItem.title = @"Homepwner";
         
         UIBarButtonItem *bbi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewItem:)];
         navItem.rightBarButtonItem = bbi;
@@ -105,10 +105,19 @@
 
 -(IBAction)addNewItem:(id)sender{
     //创建一个新的item对象
-    BNRItem *itme = [[ItemStore sharedStore] createItem];
-    NSInteger lastRow = [[[ItemStore sharedStore] allItems] indexOfObject:itme];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:lastRow inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
+    BNRItem *item = [[ItemStore sharedStore] createItem];
+//    NSInteger lastRow = [[[ItemStore sharedStore] allItems] indexOfObject:item];
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:lastRow inSection:0];
+//    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
+    DetailViewController *detailViewControll = [[DetailViewController alloc] initForNewItem:YES];
+    detailViewControll.item = item;
+    detailViewControll.dismissBlock = ^{
+        [self.tableView reloadData];
+    };
+    UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:detailViewControll];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 -(IBAction)toggleEditModel:(id)sender{
@@ -165,7 +174,9 @@
 //选中某行时
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    DetailViewController *detailViewController = [[DetailViewController alloc] init];
+//    DetailViewController *detailViewController = [[DetailViewController alloc] init];
+    DetailViewController *detailViewController = [[DetailViewController alloc] initForNewItem:NO];
+    
     detailViewController.item = [[ItemStore sharedStore] allItems][indexPath.row];
     [self.navigationController pushViewController:detailViewController animated:YES];
     

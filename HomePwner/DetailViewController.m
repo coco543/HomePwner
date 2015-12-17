@@ -10,6 +10,8 @@
 #import "BNRItem.h"
 #import "ImageStore.h"
 #import "CameraLayerView.h"
+#import "ItemStore.h"
+#import "CameraPopoverBackgroundView.h"
 @import MobileCoreServices;
 @interface DetailViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate,UIPopoverControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
@@ -23,9 +25,41 @@
 
 @property (nonatomic,strong) UIDatePicker *datePicker;
 @property (nonatomic,strong) UIPopoverController *imagePickerPopover;
+
 @end
 
 @implementation DetailViewController
+
+-(instancetype)initForNewItem:(BOOL)isNew{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        if (isNew) {
+            UIBarButtonItem *doneItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(save:)];
+            self.navigationItem.rightBarButtonItem = doneItem;
+            
+            UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+            self.navigationItem.leftBarButtonItem = cancelItem;
+        }
+    }
+    return self;
+}
+
+//点击保存的时候,只需要让呈现当前视图的控制器关闭当前视图就可以了.item已经加入到数据源中了,会在当前视图小时候,自动被表格调用后自动被显示在表格里的
+-(void)save:(id)sender{
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:self.dismissBlock];
+}
+
+//取消的话,需要移除被添加到数据源中的itme
+-(void)cancel:(id)sender{
+    [[ItemStore sharedStore] removeItem:self.item];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:self.dismissBlock];
+}
+
+//禁止直接使用默认初始化方法
+-(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    @throw [NSException exceptionWithName:@"Wrong initializer" reason:@"Use initForNewItem:" userInfo:nil];
+    return nil;
+}
 
 -(void)viewDidLoad{
     [super viewDidLoad];
@@ -216,6 +250,7 @@
         self.imagePickerPopover.delegate = self;
         
         //显示出UIPopverController 对象
+//        self.imagePickerPopover.popoverBackgroundViewClass = [CameraPopoverBackgroundView class];
         [self.imagePickerPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }else{
         [self presentViewController:imagePicker animated:YES completion:nil];

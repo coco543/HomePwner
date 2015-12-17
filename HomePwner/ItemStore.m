@@ -16,11 +16,17 @@
 
 +(instancetype) sharedStore{
     static ItemStore *sharedStore = nil;
-    if(!sharedStore){
+//    if(!sharedStore){
+//        sharedStore = [[self alloc] initPrivate];
+//    }
+    //上面代码在多线程同时触发时候可能创建多个sharedStore,所以需要修改
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken,^{
         sharedStore = [[self alloc] initPrivate];
-    }
+    });
     return sharedStore;
 }
+
 
 //提醒用户要使用 initPrivate初始化
 -(instancetype) init{

@@ -10,4 +10,8 @@
 @class BNRItem;
 @interface DetailViewController : UIViewController
 @property (nonatomic,strong) BNRItem *item;
+@property (nonatomic,strong) void (^dismissBlock)(void);
+
+-(instancetype)initForNewItem:(BOOL)isNew;
+
 @end

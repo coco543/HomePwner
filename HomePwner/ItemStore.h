@@ -10,7 +10,7 @@
 #import "BNRItem.h"
 @interface ItemStore : NSObject
 @property (nonatomic,readonly,strong) NSArray *allItems;
-
+@property (nonatomic,strong) NSArray *testValue;
 +(instancetype) sharedStore;
 
 -(BNRItem *)createItem;
