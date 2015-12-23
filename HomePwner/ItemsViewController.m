@@ -8,12 +8,14 @@
 
 #import "ItemsViewController.h"
 #import "ItemStore.h"
-#import "BNRItem.h"
+//#import "BNRItem.h"
 @interface ItemsViewController()
 @property (nonatomic,strong) IBOutlet UIView *headerView;
 @end
 @implementation ItemsViewController
 
+
+#pragma mark - 初始化
 //无论调用哪一个初始化方法,最后都是返回一个UITableViewStylePlain类型的Table对象
 - (instancetype)init
 {
@@ -39,6 +41,32 @@
 }
 
 
+#pragma mark - 视图周期
+
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
+    [self.tableView setRowHeight:44];
+    //禁止回弹
+    [self.tableView setBounces:NO];
+    //设置背景图
+    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg.png"]];
+    [self.tableView setBackgroundView:imgView];
+    
+    //增加一个头视图
+    //UIView *headView = self.headerView;
+    //[self.tableView setTableHeaderView:headView];
+}
+
+//视图要显示的时候,刷新一下表格的数据
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+}
+
+#pragma mark - TableView视图相关
+
 // 下面两个方法都是UITableViewDataSource 协议的.
 // UITableViewController  初始化后会创建一个UITableView 对象,然后把这个对象的数据源和委托对象指向了自己
 // 这样当UITableView对象要获取数据的时候,就会执行下面的两个方法来获取了.
@@ -62,20 +90,6 @@
     return cell;
 }
 
--(void)viewDidLoad{
-    [super viewDidLoad];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
-    [self.tableView setRowHeight:44];
-    //禁止回弹
-    [self.tableView setBounces:NO];
-    //设置背景图
-    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg.png"]];
-    [self.tableView setBackgroundView:imgView];
-    
-    //增加一个头视图
-    //UIView *headView = self.headerView;
-    //[self.tableView setTableHeaderView:headView];
-}
 
 
 //-(UIView *)headerView{
@@ -115,7 +129,12 @@
         [self.tableView reloadData];
     };
     UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:detailViewControll];
+    
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    //上面代码修改成如下两句,可以不让顶部控制器行驶模态操作权 P344
+    //navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    //self.definesPresentationContext = YES;
+    //如上两句代码
     navController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -182,10 +201,5 @@
     
 }
 
-//视图要显示的时候,刷新一下表格的数据
--(void)viewWillAppear:(BOOL)animated{
-    
-    [super viewWillAppear:animated];
-    [self.tableView reloadData];
-}
+
 @end

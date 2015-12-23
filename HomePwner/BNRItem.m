@@ -10,6 +10,7 @@
 
 @implementation BNRItem
 
+#pragma mark - 初始化
 + (instancetype)randomItem
 {
     // Create an immutable array of three adjectives
@@ -83,6 +84,26 @@
 - (instancetype)init
 {
     return [self initWithItemName:@"Item"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder{
+    self = [super init];
+    if (self) {
+        _itemName = [aDecoder decodeObjectForKey:@"itemName"];
+        _serialNumber = [aDecoder decodeObjectForKey:@"serialNumber"];
+        _dateCreated = [aDecoder decodeObjectForKey:@"dateCreated"];
+        _itemKey = [aDecoder decodeObjectForKey:@"itemKey"];
+        _valueInDollars = [aDecoder decodeIntForKey:@"valueInDollars"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder{
+    [aCoder encodeObject:self.itemName forKey:@"itemName"];
+    [aCoder encodeObject:self.serialNumber forKey:@"serialNumber"];
+    [aCoder encodeObject:self.dateCreated forKey:@"dateCreated"];
+    [aCoder encodeObject:self.itemKey forKey:@"itemKey"];
+    [aCoder encodeInt:self.valueInDollars forKey:@"valueInDollars"];
 }
 
 - (void)setItemName:(NSString *)str

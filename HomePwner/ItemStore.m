@@ -33,14 +33,22 @@
     @throw [NSException exceptionWithName:@"Singleton" reason:@"Use +[ItemStore initPrivate]" userInfo:nil];
 }
 
-//必须调用这个方法去初始化
+//必须调用这个方法去初始化(私有的,外部无法调用,保证了外部只能通过sharedStore获取对象,从而实现单例模式)
 -(instancetype) initPrivate{
     self = [super init];
     if(self){
-        _privateItems = [[NSMutableArray alloc] init];
+        
+        //尝试从固化文件中解固保存的对象
+        NSString *path = [self itemArchivePath];
+        _privateItems = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+        if (!_privateItems) {
+            _privateItems = [[NSMutableArray alloc] init];
+            NSLog(@"Init new items");
+        }
     }
     return self;
 }
+
 //外部得到的privateItems是一个不可修改的数组,而内部的privateItems则是一个可以修改的数组
 //不过要注意,外部仍然可以把返回的数组转型成可变的,但是这个就违反了编程约定.
 -(NSArray *)allItems{
@@ -70,5 +78,26 @@
     [self removeItem:item];
     [self.privateItems insertObject:item atIndex:toIndex];
     
+}
+
+#pragma mark - 固化相关
+
+/**
+ *  获取Items对象的保存路径 保存到沙盒的Document文件夹下
+ *
+ *  @return NSString* 路径
+ */
+- (NSString *)itemArchivePath{
+    NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSLog(@"documentDirectories = %@",documentDirectories);
+    NSString *documentDirectory = [documentDirectories firstObject];
+    
+    return [documentDirectory stringByAppendingPathComponent:@"items.archive"];
+}
+
+- (BOOL)saveChanges{
+    NSString *path = [self itemArchivePath];
+    
+    return [NSKeyedArchiver archiveRootObject:self.privateItems toFile:path];
 }
 @end

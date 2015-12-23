@@ -7,7 +7,7 @@
 //
 
 #import "DetailViewController.h"
-#import "BNRItem.h"
+//#import "BNRItem.h"
 #import "ImageStore.h"
 #import "CameraLayerView.h"
 #import "ItemStore.h"

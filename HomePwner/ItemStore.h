@@ -19,4 +19,5 @@
 
 -(void)moveItemAtIndex:(NSUInteger)formIndex toIndex:(NSUInteger)toIndex;
 
+- (BOOL)saveChanges;
 @end
