@@ -54,6 +54,7 @@
     
     //从图片提取出JPEG格式的数据
     NSData *data = UIImageJPEGRepresentation(image, 0.5);
+//    NSData *data = UIImagePNGRepresentation(image);
     
     [data writeToFile:imagePath atomically:YES];
 }
