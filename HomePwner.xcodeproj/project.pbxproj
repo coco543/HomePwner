@@ -12,6 +12,8 @@
 		ED38F4461C0D161900859A83 /* ImageStore.m in Sources */ = {isa = PBXBuildFile; fileRef = ED38F4451C0D161900859A83 /* ImageStore.m */; };
 		ED3B55141C045B8800EE4BAC /* BNRItem.m in Sources */ = {isa = PBXBuildFile; fileRef = ED3B55131C045B8800EE4BAC /* BNRItem.m */; };
 		ED3B55171C046AC500EE4BAC /* ItemStore.m in Sources */ = {isa = PBXBuildFile; fileRef = ED3B55161C046AC400EE4BAC /* ItemStore.m */; };
+		ED601C291C2AB49400938566 /* BNRItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ED601C281C2AB49400938566 /* BNRItemCell.m */; };
+		ED601C2B1C2AB52100938566 /* BNRItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED601C2A1C2AB52100938566 /* BNRItemCell.xib */; };
 		ED8CE4D01C223A6100E2825C /* CameraPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = ED8CE4CF1C223A6100E2825C /* CameraPopoverBackgroundView.m */; };
 		EDF036AC1C0D855E00341611 /* scan_net@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EDF036AB1C0D855E00341611 /* scan_net@2x.png */; };
 		EDF036AE1C0D8D2600341611 /* cameraLayer.png in Resources */ = {isa = PBXBuildFile; fileRef = EDF036AD1C0D8D2600341611 /* cameraLayer.png */; };
@@ -54,6 +56,9 @@
 		ED3B55131C045B8800EE4BAC /* BNRItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNRItem.m; sourceTree = "<group>"; };
 		ED3B55151C046AC400EE4BAC /* ItemStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemStore.h; sourceTree = "<group>"; };
 		ED3B55161C046AC400EE4BAC /* ItemStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStore.m; sourceTree = "<group>"; };
+		ED601C271C2AB49400938566 /* BNRItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BNRItemCell.h; path = ../BNRItemCell.h; sourceTree = "<group>"; };
+		ED601C281C2AB49400938566 /* BNRItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BNRItemCell.m; path = ../BNRItemCell.m; sourceTree = "<group>"; };
+		ED601C2A1C2AB52100938566 /* BNRItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BNRItemCell.xib; sourceTree = "<group>"; };
 		ED8CE4CE1C223A6100E2825C /* CameraPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraPopoverBackgroundView.h; sourceTree = "<group>"; };
 		ED8CE4CF1C223A6100E2825C /* CameraPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraPopoverBackgroundView.m; sourceTree = "<group>"; };
 		EDF036AB1C0D855E00341611 /* scan_net@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scan_net@2x.png"; sourceTree = "<group>"; };
@@ -134,6 +139,9 @@
 				ED3B55131C045B8800EE4BAC /* BNRItem.m */,
 				EDF718A41C03EFBA0091E664 /* ItemsViewController.h */,
 				EDF718A51C03EFBA0091E664 /* ItemsViewController.m */,
+				ED601C271C2AB49400938566 /* BNRItemCell.h */,
+				ED601C281C2AB49400938566 /* BNRItemCell.m */,
+				ED601C2A1C2AB52100938566 /* BNRItemCell.xib */,
 				ED3B55151C046AC400EE4BAC /* ItemStore.h */,
 				ED3B55161C046AC400EE4BAC /* ItemStore.m */,
 				ED38F4441C0D161900859A83 /* ImageStore.h */,
@@ -289,6 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDF7187E1C03EA640091E664 /* Assets.xcassets in Resources */,
+				ED601C2B1C2AB52100938566 /* BNRItemCell.xib in Resources */,
 				EDF718811C03EA640091E664 /* LaunchScreen.storyboard in Resources */,
 				ED1E89531C07D89E001F8658 /* DetailViewController.xib in Resources */,
 				EDF036AE1C0D8D2600341611 /* cameraLayer.png in Resources */,
@@ -324,6 +333,7 @@
 				ED38F4461C0D161900859A83 /* ImageStore.m in Sources */,
 				EDF7187C1C03EA640091E664 /* AppDelegate.m in Sources */,
 				ED8CE4D01C223A6100E2825C /* CameraPopoverBackgroundView.m in Sources */,
+				ED601C291C2AB49400938566 /* BNRItemCell.m in Sources */,
 				EDF718791C03EA640091E664 /* main.m in Sources */,
 				EDF036B31C0D90E700341611 /* CameraLayerView.m in Sources */,
 				ED3B55171C046AC500EE4BAC /* ItemStore.m in Sources */,
@@ -459,7 +469,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HomePwner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Cocos.HomePwner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -472,7 +482,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = HomePwner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Cocos.HomePwner;
 				PRODUCT_NAME = "$(TARGET_NAME)";

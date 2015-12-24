@@ -45,7 +45,9 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
+//    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
+    //使用自定义的Cell视图文件注册表格单元
+    [self.tableView registerNib:[UINib nibWithNibName:@"BNRItemCell" bundle:nil] forCellReuseIdentifier:@"BNRItemCell"];
     [self.tableView setRowHeight:44];
     //禁止回弹
     [self.tableView setBounces:NO];
@@ -80,12 +82,20 @@
     NSLog(@"cellForRowAtIndexPath %@",indexPath);
     //UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
     //创建可重复使用的
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:indexPath];
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:indexPath];
+    BNRItemCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BNRItemCell" forIndexPath:indexPath];
     
+    
+    if ([cell.contentView isKindOfClass:[NSObject class]]) {
+        NSLog(@"contentView is Kind of UIScrollView");
+    }
     NSArray *items = [[ItemStore sharedStore]allItems];
     BNRItem *item = items[indexPath.row];
     
-    cell.textLabel.text = [item description];
+//    cell.textLabel.text = [item description];
+    cell.nameLabel.text = item.itemName;
+    cell.serialNumberLabel.text = item.serialNumber;
+    cell.valueLabel.text = [NSString stringWithFormat:@"%d",item.valueInDollars];
     
     return cell;
 }
@@ -118,8 +128,10 @@
 }
 
 -(IBAction)addNewItem:(id)sender{
+                      
     //创建一个新的item对象
     BNRItem *item = [[ItemStore sharedStore] createItem];
+//    BNRItem * __strong *items = &item;
 //    NSInteger lastRow = [[[ItemStore sharedStore] allItems] indexOfObject:item];
 //    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:lastRow inSection:0];
 //    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
