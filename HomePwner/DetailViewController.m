@@ -226,7 +226,7 @@
 //        return;
 //    }
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    if (false && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
         
         CameraLayerView *overLayImgView = [[CameraLayerView alloc] initWithFrame:CGRectMake(0, 0, 320, 640)];
@@ -265,6 +265,7 @@
         UIImage *img = info[UIImagePickerControllerOriginalImage];
         //UIImage *img = info[UIImagePickerControllerEditedImage];
         
+        [self.item setThumbnailFromImage:img];
         [[ImageStore sharedStore] setImage:img forkey:self.item.itemKey];
         
         self.imageView.image = img;

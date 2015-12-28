@@ -9,9 +9,13 @@
 #import "ItemsViewController.h"
 #import "ItemStore.h"
 //#import "BNRItem.h"
-@interface ItemsViewController()
+#import "ImageStore.h"
+#import "BNRImageViewController.h"
+@interface ItemsViewController() <UIPopoverControllerDelegate>
 @property (nonatomic,strong) IBOutlet UIView *headerView;
+@property (nonatomic,strong) UIPopoverController *imagePopover;
 @end
+
 @implementation ItemsViewController
 
 
@@ -95,7 +99,36 @@
 //    cell.textLabel.text = [item description];
     cell.nameLabel.text = item.itemName;
     cell.serialNumberLabel.text = item.serialNumber;
-    cell.valueLabel.text = [NSString stringWithFormat:@"%d",item.valueInDollars];
+    cell.valueLabel.text = [NSString stringWithFormat:@"$%i",item.valueInDollars];
+    cell.thumbnailView.image = item.thumbnail;
+    
+    //为了避免Cell视图直接操作控制器或者访问数据源,直接给Cell视图设置一个块让他在需要的时候调用
+    //在block外弱引用cell对象,可以防止block中对cell产生引用循环
+    __weak BNRItemCell *weakCell = cell;
+    cell.actionBlock = ^{
+        //block在运行时才会对cell保持强引用.这样就不会出现引用循环问题了
+        //定义strong 目的是为了保证block在运行的时候从头到尾都可以访问到cell,所以在block开始执行时,strongCell就对cell保持强引用.直到block结束后释放局部变量strongCell,此时strongCell就会结束对cell的强引用
+        //注意,如果把下面代码修改成BNRItemCell *strongCell = cell这样就会产生引用循环.因为cell出现在block内,即被block强引用,而cell对象又强引用了block(cell.actionBlock = ****).猜测,因为weakCell是弱引用变量,所以出现在block内不会增加对象的引用计数
+        BNRItemCell *strongCell = weakCell;
+        NSLog(@"Going to show image for %@",item);
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            NSString *itemKey = item.itemKey;
+            UIImage *img = [[ImageStore sharedStore] imageForKey:itemKey];
+            if (!img) {
+                return;
+            }
+            //根据TableView对象的座标系,获取UIImageView对象的位置和大小,弹出层箭头指向改区域
+            CGRect rect = [self.view convertRect:strongCell.thumbnailView.bounds fromView:strongCell.thumbnailView];
+            
+            BNRImageViewController *ivc = [[BNRImageViewController alloc]init];
+            ivc.image = img;
+            
+            self.imagePopover = [[UIPopoverController alloc] initWithContentViewController:ivc];
+            self.imagePopover.delegate = self;
+            self.imagePopover.popoverContentSize = CGSizeMake(600, 600);
+            [self.imagePopover presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
+    };
     
     return cell;
 }
@@ -212,6 +245,9 @@
     [self.navigationController pushViewController:detailViewController animated:YES];
     
 }
-
+#pragma mark - 其他委托代理
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController{
+    self.imagePopover =nil;
+}
 
 @end

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Big Nerd Ranch. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface BNRItem : NSObject <NSCoding>
 {
@@ -16,7 +16,10 @@
     int _valueInDollars;
     NSDate *_dateCreated;
 }
+//copy,strong都可以
 @property (nonatomic,copy) NSString *itemKey;
+//存放缩略图
+@property (nonatomic,strong) UIImage *thumbnail;
 
 + (instancetype)randomItem;
 
@@ -43,4 +46,5 @@
 - (NSDate *)dateCreated;
 - (void)setDateCreated:(NSDate *)date;
 
+- (void)setThumbnailFromImage:(UIImage *)image;
 @end

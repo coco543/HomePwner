@@ -14,4 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *serialNumberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *valueLabel;
 
+//创建block是在栈中创建的.对它使用strong,它也会随着方法栈被释放而释放的.所以一定要用copy,复制一份到堆中保存.
+@property (nonatomic,copy) void (^actionBlock)(void);
 @end
