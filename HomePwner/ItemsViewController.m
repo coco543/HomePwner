@@ -100,6 +100,9 @@
     cell.nameLabel.text = item.itemName;
     cell.serialNumberLabel.text = item.serialNumber;
     cell.valueLabel.text = [NSString stringWithFormat:@"$%i",item.valueInDollars];
+    if (item.valueInDollars >= 50) {
+        cell.valueLabel.textColor = [UIColor redColor];
+    }
     cell.thumbnailView.image = item.thumbnail;
     
     //为了避免Cell视图直接操作控制器或者访问数据源,直接给Cell视图设置一个块让他在需要的时候调用
