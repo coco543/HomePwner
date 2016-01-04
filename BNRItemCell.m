@@ -10,7 +10,8 @@
 @interface BNRItemCell()
 
 //左侧ImageView宽高约束
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageViewWidthConstraint;
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageViewWidthConstraint;
+//优化约束,让宽度等于高度,就只设置高度即可
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageViewHeightConstraint;
 
 @end
@@ -22,7 +23,10 @@
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateInterfaceForDynamicTypeSize) name:UIContentSizeCategoryDidChangeNotification object:nil];
     
+    //优化约束,让宽度等于高度,就只设置高度即可
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.thumbnailView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.thumbnailView attribute:NSLayoutAttributeHeight multiplier:1 constant:0];
     
+    [self.thumbnailView addConstraint:constraint];
 }
 
 - (void)dealloc{
@@ -54,7 +58,7 @@
     
     NSString *userSize = [[UIApplication sharedApplication] preferredContentSizeCategory];
     NSNumber *imageSize = imageSizeDictionary[userSize];
-    self.imageViewWidthConstraint.constant = imageSize.floatValue;
+//    self.imageViewWidthConstraint.constant = imageSize.floatValue;
     self.imageViewHeightConstraint.constant = imageSize.floatValue;
     
 }
