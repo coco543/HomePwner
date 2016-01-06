@@ -82,7 +82,7 @@
                                 <action selector="takePicture:" destination="-1" id="J7R-mX-SYP"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem systemItem="flexibleSpace" id="ctu-xa-Sw2"/>
+                        <barButtonItem width="234" systemItem="fixedSpace" id="ctu-xa-Sw2"/>
                         <barButtonItem systemItem="trash" id="OAl-AX-iN1">
                             <connections>
                                 <action selector="deleteImage:" destination="-1" id="0kB-x9-4W6"/>
