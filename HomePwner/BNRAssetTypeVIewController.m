@@ -75,7 +75,12 @@
     NSManagedObject *assetType = allAssets[indexPath.row];
     self.item.assetType = assetType;
     
-    [self.navigationController popViewControllerAnimated:YES];
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        [self.tableView reloadData];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
 }
 /*
 // Override to support conditional editing of the table view.

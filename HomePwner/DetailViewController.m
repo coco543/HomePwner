@@ -34,6 +34,7 @@
 
 @property (nonatomic,strong) UIDatePicker *datePicker;
 @property (nonatomic,strong) UIPopoverController *imagePickerPopover;
+@property (nonatomic,strong) UIPopoverController *assetTypePopover;
 
 
 @end
@@ -73,7 +74,17 @@
     BNRAssetTypeVIewController *avc = [[BNRAssetTypeVIewController alloc] init];
     
     avc.item = self.item;
-    [self.navigationController pushViewController:avc animated:YES];
+    
+    //ipad 专用控制器UIPopverController
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        self.assetTypePopover = [[UIPopoverController alloc] initWithContentViewController:avc];
+        self.assetTypePopover.delegate = self;
+        
+        //显示出UIPopverController 对象
+        [self.assetTypePopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }else{
+        [self.navigationController pushViewController:avc animated:YES];
+    }
 }
 
 //禁止直接使用默认初始化方法
@@ -327,9 +338,11 @@
 }
 
 //相机按钮Popover窗口消失时候触发(发送dismissPopoverAnimated消息主动让它消失的时候不会触发)
+//类型选择也触发该方法
 -(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController{
     NSLog(@"User dismissed popover");
     self.imagePickerPopover = nil;
+    self.assetTypePopover = nil;
 }
 
 #pragma mark - Device
