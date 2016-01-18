@@ -15,6 +15,8 @@
 
 -(BNRItem *)createItem;
 
+-(NSArray *)allAssetTypes;
+
 -(void)removeItem:(BNRItem *)item;
 
 -(void)moveItemAtIndex:(NSUInteger)formIndex toIndex:(NSUInteger)toIndex;

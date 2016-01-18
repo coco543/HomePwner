@@ -12,6 +12,8 @@
 #import "CameraLayerView.h"
 #import "ItemStore.h"
 #import "CameraPopoverBackgroundView.h"
+#import "BNRAssetTypeVIewController.h"
+
 @import MobileCoreServices;
 @interface DetailViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate,UIPopoverControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
@@ -22,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UIButton *dateButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *assetTypeButton;
 
 //用于实现动态字体
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
@@ -64,6 +67,14 @@
     [[ItemStore sharedStore] removeItem:self.item];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:self.dismissBlock];
 }
+- (IBAction)showAssetTypePicker:(id)sender {
+    [self.view endEditing:YES];
+    
+    BNRAssetTypeVIewController *avc = [[BNRAssetTypeVIewController alloc] init];
+    
+    avc.item = self.item;
+    [self.navigationController pushViewController:avc animated:YES];
+}
 
 //禁止直接使用默认初始化方法
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
@@ -101,8 +112,6 @@
 -(void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
-    //动态字体
-    [self updateFonts];
     
     UIInterfaceOrientation io = [[UIApplication sharedApplication] statusBarOrientation];
     [self prepareForOrientation:io];
@@ -133,10 +142,20 @@
     [topView setItems:buttonsArray];
     [self.valueField setInputAccessoryView:topView];
     
-    //载入BNRItem对象的图片
+    //载入BNRItem对象的图片,key为空则放回的图片也是nil,运行正常
     NSString *key = self.item.itemKey;
-    UIImage *img = [[ImageStore sharedStore] imageForKey:key];
-    self.imageView.image = img;
+    UIImage *imageToDisplay = [[ImageStore sharedStore] imageForKey:key];
+    self.imageView.image = imageToDisplay;
+    
+    //让item的分类也显示出来
+    NSString *typeLabel = [self.item.assetType valueForKey:@"label"];
+    if (!typeLabel) {
+        typeLabel = @"none";
+    }
+    self.assetTypeButton.title = [NSString stringWithFormat:@"Type:%@",typeLabel];
+    
+    //动态字体
+    [self updateFonts];
     
 }
 
@@ -347,6 +366,7 @@
     self.nameField.font = font;
     self.serialNumberField.font = font;
     self.valueField.font = font;
+    
 }
 @end
 

@@ -1,50 +1,33 @@
 //
 //  BNRItem.h
-//  RandomItems
+//  HomePwner
 //
-//  Created by John Gallagher on 1/12/14.
-//  Copyright (c) 2014 Big Nerd Ranch. All rights reserved.
+//  Created by 郑克明 on 16/1/11.
+//  Copyright © 2016年 郑克明. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 
-@interface BNRItem : NSObject <NSCoding>
-{
-    NSString *_itemName;
-    NSString *_serialNumber;
-    NSMutableString *_varietyString;
-    int _valueInDollars;
-    NSDate *_dateCreated;
-}
-//copy,strong都可以
-@property (nonatomic,copy) NSString *itemKey;
-//存放缩略图
-@property (nonatomic,strong) UIImage *thumbnail;
+NS_ASSUME_NONNULL_BEGIN
 
-+ (instancetype)randomItem;
+@interface BNRItem : NSManagedObject
 
-// Designated initializer for BNRItem
-- (instancetype)initWithItemName:(NSString *)name
-                  valueInDollars:(int)value
-                    serialNumber:(NSString *)sNumber;
+// Insert code here to declare functionality of your managed object subclass
 
-- (instancetype)initWithItemName:(NSString *)name;
+@property (nullable, nonatomic, strong) NSDate *dateCreated;
+@property (nullable, nonatomic, strong) NSString *itemKey;
+@property (nullable, nonatomic, strong) NSString *itemName;
+//double 方便排序.插入某个位置时,值去前后元素排序值的中值即可
+@property (nonatomic) double orderingValue;
+@property (nullable, nonatomic, strong) NSString *serialNumber;
+@property (nullable, nonatomic, strong) UIImage  *thumbnail;
+@property (nonatomic) int valueInDollars;
+@property (nullable, nonatomic, strong) NSManagedObject *assetType;
 
-
-- (void)setItemName:(NSString *)str;
-- (NSString *)itemName;
-
-- (void)setSerialNumber:(NSString *)str;
-- (NSString *)serialNumber;
-
-- (void)setValueInDollars:(int)v;
-- (int)valueInDollars;
-
--(void)setVarietyString:(NSMutableString *)string;
--(NSMutableString *)varietyString;
-
-- (NSDate *)dateCreated;
-- (void)setDateCreated:(NSDate *)date;
 
 - (void)setThumbnailFromImage:(UIImage *)image;
+
 @end
+
+NS_ASSUME_NONNULL_END
