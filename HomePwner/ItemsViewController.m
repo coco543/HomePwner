@@ -208,13 +208,16 @@
     detailViewControll.dismissBlock = ^{
         [self.tableView reloadData];
     };
+    
+    //这里用一个导航控制器展示detailViewControll,原因就是在用模态显示detailViewControll时,如果不用导航控制器,则没有UINavigationBar了需要手动再定制一个,所以使用导航控制器比较方便.(presentViewController要显示的视图必须是非active,被[[UINavigationController alloc]initWithRootViewController:detailViewControll]之后的视图已经是active了)
     UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:detailViewControll];
     
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    //上面代码修改成如下两句,可以不让顶部控制器行驶模态操作权 P344
+    //navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    //修改成
     //navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     //self.definesPresentationContext = YES;
-    //如上两句代码
+    //可以不让顶部控制器行使模态操作权,转而让self来用模态显示navControler,这样navController就不会盖住nagivation对象了(没覆盖在上方导致无法点击了...) P344
     navController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     [self presentViewController:navController animated:YES completion:nil];
 }

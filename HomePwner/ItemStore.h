@@ -17,6 +17,8 @@
 
 -(NSArray *)allAssetTypes;
 
+-(void)addNewAssetType:(NSString *)typeName;
+
 -(void)removeItem:(BNRItem *)item;
 
 -(void)moveItemAtIndex:(NSUInteger)formIndex toIndex:(NSUInteger)toIndex;
