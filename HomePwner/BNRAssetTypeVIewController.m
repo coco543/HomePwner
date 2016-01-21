@@ -12,6 +12,7 @@
 @interface BNRAssetTypeVIewController () <UINavigationControllerDelegate>
 @property (nonatomic,strong) UINavigationController *navController;
 @property (nonatomic,strong) UITextField *typeNameTextField;
+@property (nonatomic,strong) NSArray *similarItems;
 @end
 
 
@@ -45,36 +46,63 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [[[ItemStore sharedStore] allAssetTypes] count];
+    NSArray *allAssets = [[ItemStore sharedStore] allAssetTypes];
+    if (section == 0) {
+        return [allAssets count];
+    }
+    return [[ItemStore sharedStore] countItemsWithAssetType:[self.item.assetType valueForKey:@"label"]];
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 2;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if (!section) {
+        return @"All asset types";
+    }
+    NSString *label = [self.item.assetType valueForKey:@"label"];
+    return [NSString stringWithFormat:@"All %@ items",label];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:indexPath];
-    
     // Configure the cell...
-    NSArray *allAssets =[[ItemStore sharedStore] allAssetTypes];
-    NSManagedObject *assetType = allAssets[indexPath.row];
-    NSString *label = [assetType valueForKey:@"label"];
-    cell.textLabel.text = label;
-    
-    //为选中的对象加上勾选的标记
-    if (assetType == self.item.assetType) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    if (indexPath.section == 0) {
+        NSArray *allAssets =[[ItemStore sharedStore] allAssetTypes];
+        NSManagedObject *assetType = allAssets[indexPath.row];
+        NSString *label = [assetType valueForKey:@"label"];
+        cell.textLabel.text = label;
+        
+        //为选中的对象加上勾选的标记
+        if (assetType == self.item.assetType) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }else{
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
     }else{
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        NSString *typeName = [self.item.assetType valueForKey:@"label"];
+        if (!self.similarItems) {
+            self.similarItems = [[ItemStore sharedStore] itemsWithAssetType:typeName];
+        }
+        cell.textLabel.text = [self.similarItems[indexPath.row] itemName];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section > 0) {
+        return;
+    }
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
     
     NSArray *allAssets = [[ItemStore sharedStore] allAssetTypes];
     NSManagedObject *assetType = allAssets[indexPath.row];
+    //这里对item的assetType修改,可以直接保存到NSManagedObjectContext中,因为每一个assetType在创建时参数都传入一个content指针
     self.item.assetType = assetType;
     
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
@@ -84,6 +112,8 @@
     }
     
 }
+
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

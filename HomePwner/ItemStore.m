@@ -188,6 +188,42 @@
     }
 }
 
+- (NSArray *)itemsWithAssetType:(NSString *)assetType{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];NSEntityDescription *e = [NSEntityDescription entityForName:@"BNRItem" inManagedObjectContext:self.content];
+    request.entity = e;
+    NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"orderingValue" ascending:YES];
+    NSPredicate *typePredicate = [NSPredicate predicateWithFormat:@"assetType.label like %@",assetType];
+    request.predicate = typePredicate;
+    request.sortDescriptors = @[sd];
+    NSError *error;
+    NSArray *result = [self.content executeFetchRequest:request error:&error];
+    
+    if (!result) {
+        [NSException raise:@"Fetch failed" format:@"Reason %@",[error localizedDescription]];
+    }
+    return result;
+}
+
+- (NSInteger)countItemsWithAssetType:(NSString *)typeName{
+    if(!typeName){
+        return 0;
+    }
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];NSEntityDescription *e = [NSEntityDescription entityForName:@"BNRItem" inManagedObjectContext:self.content];
+    request.entity = e;
+    NSPredicate *typePredicate = [NSPredicate predicateWithFormat:@"assetType.label like %@",typeName];
+    request.predicate = typePredicate;
+    NSError *error;
+    NSInteger result;
+    NSLog(@"%@",typeName);
+    @try {
+        result = [self.content countForFetchRequest:request error:&error];
+    }
+    @catch (NSException *exception) {
+        [NSException raise:@"Fetch failed" format:@"Reason %@",[exception reason]];
+    }
+    return result;
+}
+
 - (NSArray *)allAssetTypes{
     if (!_allAssetTypes) {
         NSFetchRequest *request = [[NSFetchRequest alloc] init];

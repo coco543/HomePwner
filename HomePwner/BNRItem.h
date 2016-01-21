@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong) NSDate *dateCreated;
 @property (nullable, nonatomic, strong) NSString *itemKey;
 @property (nullable, nonatomic, strong) NSString *itemName;
-//double 方便排序.插入某个位置时,值去前后元素排序值的中值即可
+//double 方便排序.插入某个位置时,值取前后元素排序值的中值即可
 @property (nonatomic) double orderingValue;
 @property (nullable, nonatomic, strong) NSString *serialNumber;
 @property (nullable, nonatomic, strong) UIImage  *thumbnail;

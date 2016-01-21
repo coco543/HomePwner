@@ -17,6 +17,10 @@
 
 -(NSArray *)allAssetTypes;
 
+-(NSArray *)itemsWithAssetType:(NSString *)assetType;
+
+-(NSInteger)countItemsWithAssetType:(NSString *)typeName;
+
 -(void)addNewAssetType:(NSString *)typeName;
 
 -(void)removeItem:(BNRItem *)item;
