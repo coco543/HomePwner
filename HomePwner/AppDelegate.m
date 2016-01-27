@@ -14,15 +14,27 @@
 
 @implementation AppDelegate
 
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+    self.window = [[UIWindow alloc] init];
+    self.window.backgroundColor = [UIColor whiteColor];
+    return YES;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     NSLog(@"%@",NSStringFromSelector(_cmd));
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//    NSLog(@"%@",NSStringFromCGSize([[UIScreen mainScreen] bounds].size));
-    self.window.backgroundColor = [UIColor whiteColor];
-    ItemsViewController *itemsViewController = [[ItemsViewController alloc] init];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemsViewController];
-    self.window.rootViewController = navController;
+    NSLog(@"%@",NSStringFromCGSize([[UIScreen mainScreen] bounds].size));
+//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.frame = [[UIScreen mainScreen] bounds];
+//    self.window.backgroundColor = [UIColor whiteColor];
+    //应用没有触发状态恢复时,才新建视图控制器
+    if (!self.window.rootViewController) {
+        ItemsViewController *itemsViewController = [[ItemsViewController alloc] init];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemsViewController];
+        //将navController的类名设置为恢复标识,告知系统要保存或者恢复这个节点的状态
+        //这里并没有设置恢复类,将由应用程序托管负责创建
+        navController.restorationIdentifier = NSStringFromClass([navController class]);
+        self.window.rootViewController = navController;
+    }
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -61,6 +73,35 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     NSLog(@"%@",NSStringFromSelector(_cmd));
+}
+
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder{
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder{
+    return YES;
+}
+
+//没有设置恢复类的对象,系统会自动调用应用程序委托(下面方法)创建该对象
+- (UIViewController *)application:(UIApplication *)application viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    //参考 P462
+    //如果是在列表里点击item打开一个新窗口显示detail,这个时候detail控制器里的viewControllerWithRestorationIdentifierPath方法中的path里面就是UINavigationController/DetailViewController
+    
+    //如果是在程序启动之后创建的UINavController并向其中圧入itemsViewController,这个时候itemsViewController里的viewControllerWithRestorationIdentifierPath方法中的path里面就是UINavigationController/ItemsViewController
+    
+    //如果是点击新增按钮弹出的detail,这个时候detail控制器里的viewControllerWithRestorationIdentifierPath方法中的path显示的就是UINavigationController/UINavigationController/DetailViewController
+    
+    //所以当前方法的path就等于detail里viewControllerWithRestorationIdentifierPath的path去掉最后一个节点
+    
+    UIViewController *vc = [[UINavigationController alloc] init];
+    //路径里的最后一个就是相应的UINavigationController
+    vc.restorationIdentifier = [identifierComponents lastObject];
+    //通过path的数量可以确定是属于点击item查看详情显示detail控制器,还是点击新增item显示detail控制器
+    if ([identifierComponents count] == 1) {
+        self.window.rootViewController = vc;
+    }
+    return vc;
 }
 
 @end

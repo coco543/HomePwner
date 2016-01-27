@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "DetailViewController.h"
 #import "BNRItemCell.h"
-@interface ItemsViewController : UITableViewController
+@interface ItemsViewController : UITableViewController <UIViewControllerRestoration>
 
 @end

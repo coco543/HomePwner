@@ -27,6 +27,9 @@
     if(self){
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Homepwner";
+        //设置恢复标识和恢复类
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
         
         UIBarButtonItem *bbi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewItem:)];
         navItem.rightBarButtonItem = bbi;
@@ -73,6 +76,10 @@
     [super viewWillAppear:animated];
     [self updateTableViewForDynamicTypeSize];
     [self.tableView reloadData];
+}
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    return [[self alloc] init];
 }
 
 #pragma mark - 动态字体
@@ -212,6 +219,9 @@
     //这里用一个导航控制器展示detailViewControll,原因就是在用模态显示detailViewControll时,如果不用导航控制器,则没有UINavigationBar了需要手动再定制一个,所以使用导航控制器比较方便.(presentViewController要显示的视图必须是非active,被[[UINavigationController alloc]initWithRootViewController:detailViewControll]之后的视图已经是active了)
     UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:detailViewControll];
     
+    //设置恢复标识,不用设置恢复类,同AppDelegate里描述
+    navController.restorationIdentifier = NSStringFromClass([navController class]);
+    
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     //navController.modalPresentationStyle = UIModalPresentationFormSheet;
     //修改成
@@ -219,6 +229,7 @@
     //self.definesPresentationContext = YES;
     //可以不让顶部控制器行使模态操作权,转而让self来用模态显示navControler,这样navController就不会盖住nagivation对象了(没覆盖在上方导致无法点击了...) P344
     navController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    
     [self presentViewController:navController animated:YES completion:nil];
 }
 
@@ -287,5 +298,6 @@
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController{
     self.imagePopover =nil;
 }
+
 
 @end

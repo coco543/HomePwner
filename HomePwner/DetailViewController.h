@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @class BNRItem;
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController <UIViewControllerRestoration>
 @property (nonatomic,strong) BNRItem *item;
 @property (nonatomic,strong) void (^dismissBlock)(void);
 

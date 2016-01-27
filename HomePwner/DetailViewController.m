@@ -41,9 +41,12 @@
 
 @implementation DetailViewController
 
+#pragma mark - 视图初始化和生命周期
 -(instancetype)initForNewItem:(BOOL)isNew{
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
         if (isNew) {
             UIBarButtonItem *doneItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(save:)];
             self.navigationItem.rightBarButtonItem = doneItem;
@@ -180,6 +183,15 @@
     item.itemName = self.nameField.text;
     item.serialNumber = self.serialNumberField.text;
     item.valueInDollars = [self.valueField.text intValue];
+}
+
++(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    NSLog(@"%@",identifierComponents);
+    BOOL isNew = NO;
+    if ([identifierComponents count] == 3) {
+        isNew = YES;
+    }
+    return [[self alloc]initForNewItem:isNew];
 }
 
 - (void)dealloc{
