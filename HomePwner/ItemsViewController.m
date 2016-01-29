@@ -11,7 +11,7 @@
 //#import "BNRItem.h"
 #import "ImageStore.h"
 #import "BNRImageViewController.h"
-@interface ItemsViewController() <UIPopoverControllerDelegate>
+@interface ItemsViewController() <UIPopoverControllerDelegate, UIDataSourceModelAssociation>
 @property (nonatomic,strong) IBOutlet UIView *headerView;
 @property (nonatomic,strong) UIPopoverController *imagePopover;
 @end
@@ -58,6 +58,7 @@
 //    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
     //使用自定义的Cell视图文件注册表格单元
     [self.tableView registerNib:[UINib nibWithNibName:@"BNRItemCell" bundle:nil] forCellReuseIdentifier:@"BNRItemCell"];
+    self.tableView.restorationIdentifier = @"ItemsViewControllerTableView";
     [self.tableView setRowHeight:44];
     //禁止回弹
     [self.tableView setBounces:NO];
@@ -80,6 +81,41 @@
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
     return [[self alloc] init];
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    [coder encodeBool:self.isEditing forKey:@"TableViewIsEditing"];
+    [super encodeRestorableStateWithCoder:coder];
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    BOOL isEditing = [coder decodeBoolForKey:@"TableViewIsEditing"];
+    self.editing = isEditing;
+    [super decodeRestorableStateWithCoder:coder];
+}
+
+//用于恢复选中行
+- (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)idx inView:(UIView *)view{
+    NSString *identifier = nil;
+    if (idx && view) {
+        BNRItem *item = [[ItemStore sharedStore] allItems][idx.row];
+        identifier = item.itemKey;
+    }
+    return identifier;
+}
+
+- (NSIndexPath *)indexPathForElementWithModelIdentifier:(NSString *)identifier inView:(UIView *)view{
+    NSIndexPath *idx = nil;
+    if (identifier && view) {
+        NSArray *items = [[ItemStore sharedStore] allItems];
+        for (BNRItem *item in items) {
+            if ([identifier isEqualToString:item.itemKey]) {
+                NSInteger row = [items indexOfObjectIdenticalTo: item];
+                idx = [NSIndexPath indexPathForRow:row inSection:0];
+            }
+        }
+    }
+    return idx;
 }
 
 #pragma mark - 动态字体
@@ -286,7 +322,7 @@
 
 //选中某行时
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    return;
 //    DetailViewController *detailViewController = [[DetailViewController alloc] init];
     DetailViewController *detailViewController = [[DetailViewController alloc] initForNewItem:NO];
     

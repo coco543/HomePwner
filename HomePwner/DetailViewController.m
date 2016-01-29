@@ -194,6 +194,30 @@
     return [[self alloc]initForNewItem:isNew];
 }
 
+//选择需要恢复的数据进行保存和恢复 -P464
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    [coder encodeObject:self.item.itemKey forKey:@"item.itemKey"];
+    
+    //保存文本框中的数据
+    self.item.itemName       = self.nameField.text;
+    self.item.serialNumber   = self.serialNumberField.text;
+    self.item.valueInDollars = [self.valueField.text intValue];
+    
+    [[ItemStore sharedStore] saveChanges];
+    [super encodeRestorableStateWithCoder:coder];
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    NSString *itemKey = [coder decodeObjectForKey:@"item.itemKey"];
+    for (BNRItem *item in [[ItemStore sharedStore] allItems]) {
+        if ([itemKey isEqualToString:item.itemKey]) {
+            self.item = item;
+            break;
+        }
+    }
+    [super decodeRestorableStateWithCoder:coder];
+}
+
 - (void)dealloc{
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc removeObserver:self];
