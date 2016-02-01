@@ -174,7 +174,16 @@
 //    cell.textLabel.text = [item description];
     cell.nameLabel.text = item.itemName;
     cell.serialNumberLabel.text = item.serialNumber;
-    cell.valueLabel.text = [NSString stringWithFormat:@"$%i",item.valueInDollars];
+    
+    //处理货币本地化
+    static NSNumberFormatter *currencyFormatter = nil;
+    if (currencyFormatter == nil) {
+        currencyFormatter = [[NSNumberFormatter alloc] init];
+        currencyFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    }
+    
+//    cell.valueLabel.text = [NSString stringWithFormat:@"$%i",item.valueInDollars];
+    cell.valueLabel.text = [currencyFormatter stringForObjectValue:@(item.valueInDollars)];
     if (item.valueInDollars >= 50) {
         cell.valueLabel.textColor = [UIColor redColor];
     }
@@ -322,7 +331,6 @@
 
 //选中某行时
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    return;
 //    DetailViewController *detailViewController = [[DetailViewController alloc] init];
     DetailViewController *detailViewController = [[DetailViewController alloc] initForNewItem:NO];
     
