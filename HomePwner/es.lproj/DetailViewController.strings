@@ -1,0 +1,18 @@
+
+/* Class = "UIBarButtonItem"; title = "None"; ObjectID = "4T2-NB-uBf"; */
+"4T2-NB-uBf.title" = "None";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "CSz-3B-E44"; */
+"CSz-3B-E44.text" = "Name";
+
+/* Class = "UIButton"; normalTitle = "Change Date"; Obje  .ctID = "JfB-my-nmV"; */
+"JfB-my-nmV.normalTitle" = "Change Date";
+
+/* Class = "UILabel"; text = "Serial"; ObjectID = "Rcd-zo-5fg"; */
+"Rcd-zo-5fg.text" = "Numéro de serie";
+
+/* Class = "UILabel"; text = "Value"; ObjectID = "c5f-TO-4Lf"; */
+"c5f-TO-4Lf.text" = "Value";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "g5T-w3-NLh"; */
+"g5T-w3-NLh.text" = "Label";

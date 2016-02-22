@@ -13,6 +13,7 @@
 #import "ItemStore.h"
 #import "CameraPopoverBackgroundView.h"
 #import "BNRAssetTypeVIewController.h"
+#import "AppDelegate.h"
 
 @import MobileCoreServices;
 @interface DetailViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate,UIPopoverControllerDelegate>
@@ -182,7 +183,16 @@
     BNRItem *item = self.item;
     item.itemName = self.nameField.text;
     item.serialNumber = self.serialNumberField.text;
-    item.valueInDollars = [self.valueField.text intValue];
+//    用户偏好设置,优化用户体验,把用户当前填入的值设置成下一次新建的默认值
+//    item.valueInDollars = [self.valueField.text intValue];
+    int newValue = [self.valueField.text intValue];
+    if (newValue != item.valueInDollars) {
+        //如果有改动,则赋值给item,随后保持进用户设置里
+        item.valueInDollars = newValue;
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setInteger:newValue forKey:BNRNextItemValuePrefsKey];
+    }
+    
 }
 
 +(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{

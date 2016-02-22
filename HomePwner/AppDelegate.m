@@ -8,11 +8,21 @@
 
 #import "AppDelegate.h"
 #import "ItemStore.h"
+
+NSString * const BNRNextItemValuePrefsKey = @"NextItemValue";
+NSString * const BNRNextItemNamePrefsKey = @"NextItemName";
 @interface AppDelegate ()
 
 @end
 
 @implementation AppDelegate
+
+//第一次实例化对象的时候被调用
++(void)initialize{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *factorySettings = @{BNRNextItemValuePrefsKey:@75, BNRNextItemNamePrefsKey:@"Coffee Cup"};
+    [defaults registerDefaults:factorySettings];
+}
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     self.window = [[UIWindow alloc] init];
